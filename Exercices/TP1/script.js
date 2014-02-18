@@ -55,9 +55,13 @@ var generateKey = function(){
 	for (var i = 0; i<27; i++){
 		keygen.push(String.fromCharCode(65+i));
 	}
+	keygen.push(" ");
+	keygen.push(".");
+	keygen.push(",");
+
 	var newKeygen = [];
 	var temp = "";
-	i--;
+	i = keygen.length-1;
     while ( --i ) {
     	/*Magic, do not touch !*/
         var j = Math.floor( Math.random() * ( i + 1 ) );
