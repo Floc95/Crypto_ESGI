@@ -84,10 +84,11 @@ function AttackSysteme(){
 	        s = s.replace(diacritics[i], chars[i]);
 	    }
 
-	    var charsSpec = ['-', '&', '"', '!', '?', ';', '(', ')', '’', '1', '8', '0', '…', 'œ', 'ü', '2', '3', '4', '5', '6', '7', '9', '@', '#', '{', '}', '$', '€'];
+	    var charsSpec = ['-', '&', '"', '!', '?', ';', '(', ')', '’', '1', '8', '0', '…', 'œ', 'ü', '2', '3', '4', '5', '6', '7', '9', '@', '#', '{', '}', '$', '€', '\n', '\r'];
 		for (var i = 0; i < charsSpec.length; i++) {
-	    	s = s.replace(charsSpec[i], "");
+	    	s = s.replace(charsSpec[i], " ");
 	    };
+
 
 	    return s;
 	}
