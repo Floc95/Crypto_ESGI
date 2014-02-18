@@ -12,6 +12,10 @@
 			<h5>Resultat de l'attaque</h5>
 			<textarea id="resAttack"></textarea>
 		</div>
+		<div>
+			<h5>Cle regenere</h5>
+			<textarea id="resKey"></textarea>
+		</div>
 	</body>
 	<script src="cryptosysteme.js" ></script>
 	<script src="attacksysteme.js" ></script>
@@ -22,6 +26,7 @@
 			var content = document.getElementById('attack').value;
 			var res = attackSys.attack(content);
 			document.getElementById('resAttack').value = res;
+			document.getElementById('resKey').value = attackSys.key;
 		};
 	</script>
 </html>
