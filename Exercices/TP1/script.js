@@ -86,3 +86,15 @@ var runDecode = function(){
 	var clair = decode(crypted, keygen);
 	document.getElementById('reclair').value = clair;
 };
+
+/**********************************************************/
+
+var attack = function(content){
+
+};
+
+var runAttack = function(){
+	var content = document.getElementById('attack').value;
+	var res = attack(content);
+	document.getElementById('resAttack').value = res;
+};
