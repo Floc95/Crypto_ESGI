@@ -1,59 +1,64 @@
 
-var clair = "coucou";
+var clair = "COUCOU";
 var key = "QSDFGHJKLMPOIUYTREZAWXCVBN098";
 var crypt = "";
 
-
-var encode = function(){
-	//Entre a et z = met un espace ;
-	//
-	var cryptcontent = "";
-	for (var i = 0 ; i<clair.length ; i++) {
-		cryptcontent += clair[i].charCodeAt(0)*Math.PI+";";
-	}
-	return cryptcontent;
+var getKeyMap = function(key){
+	var map = [];
+	for (var i = 0; i < key.length; i++) {
+		if (i < 26)
+			map[key[i]] = String.fromCharCode(i + 65);
+		else if (i == 26)
+			map[key[i]] = '.';
+		else if (i == 27)
+			map[key[i]] = ' ';
+		else if (i == 28)
+			map[key[i]] = ',';
+	};
+	return map;
 };
 
-var decode = function(){
-	var clearcontent = "";
-	var content = crypt.split(";");
-	for (var i = 0 ; i<content.length ; i++) {
-		clearcontent += String.fromCharCode(content[i]*(Math.pow(Math.PI, -1)));
-	}
-	return clearcontent;
+var getValueMap = function(key){
+	var map = [];
+	for (var i = 0; i < key.length; i++) {
+		if (i < 26)
+			map[String.fromCharCode(i + 65)] = key[i];
+		else if (i == 26)
+			map['.'] = key[i];
+		else if (i == 27)
+			map[' '] = key[i];
+		else if (i == 28)
+			map[','] = key[i];
+	};
+	return map;
 };
+
+var convertWithMap = function(source, map)
+{
+	var result = "";
+
+	for (var i = 0 ; i<source.length ; i++) {
+		result += map[source[i]];
+	}
+	return result;
+}
 
 var encode = function(fileSrc, fileKey){
 
-	cryptcontent = "";
-	for (var i = 0 ; i<fileSrc.length ; i++) {
-		var ascii = clair[i].charCodeAt(0);
-		if (ascii-65> 0 && ascii-65<27)
-			cryptcontent += key[(clair[i].charCodeAt(0)-65)];
-		if (ascii-97>0 && ascii-97<27)
-			cryptcontent += key[(clair[i].charCodeAt(0)-97)];
-		if (clair[i] == ' ')
-			cryptcontent += key[26];
-		if (clair[i] == ',')
-			cryptcontent += key[27];
-		if (clair[i] == '.')
-			cryptcontent += key[28];
-	}
-	return cryptcontent;
+	var key = fileKey; // Lire le contenu du fichier
+	var source = fileSrc; // Lire le contenu du fichier
+	var map = getValueMap(key);
+
+	return convertWithMap(source, map);
 }
 
 var decode = function(fileSrc, fileKey){
- var clearcontentbis = "";
- for (var i = 0; i < fileSrc.length; i++){
- 	var currentascii = fileSrc[i];
- 	for (var y = 0; y <  fileKey.length; y++) {
- 		 if (fileKey[y] == currentascii)
- 		 	clearcontentbis +=  String.fromCharCode(y + 65);
- 	};
 
- };
- return clearcontentbis;
+	var key = fileKey; // Lire le contenu du fichier
+	var source = fileSrc; // Lire le contenu du fichier
+	var map = getKeyMap(key);
 
+	return convertWithMap(source, map);
 }
 
 var generateKey = function(){
