@@ -17,15 +17,17 @@
 			<textarea id="cledecode"></textarea>
 		</div>
 	</body>
-	<script src="attacksysteme.js" ></script>
+	<script src="cryptosysteme.js" ></script>
+	<script src="attackCesar.js" ></script>
 	<script>
-		var attackSys = new AttackSysteme();
+		var cryptoSys = new Cryptosysteme();
+		var attackCesar = new AttackCesar(cryptoSys);
 
 		var runAttack = function(){
 			var content = document.getElementById('crypted').value;
-			var res = attackSys.attack(content);
+			var res = attackCesar.attack(content);
 			document.getElementById('reclair').value = res;
-			document.getElementById('cledecode').value = attackSys.key;
+			document.getElementById('cledecode').value = attackCesar.keyDecale;
 		};
 	</script>
 </html>
