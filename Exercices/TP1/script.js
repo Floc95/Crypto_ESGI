@@ -47,8 +47,8 @@ var decode = function(fileSrc, fileKey){
  for (var i = 0; i < fileSrc.length; i++){
  	var currentascii = fileSrc[i];
  	for (var y = 0; y <  fileKey.length; y++) {
- 		 if (fileKey[i] == currentascii)
- 		 	clearcontentbis +=  currentascii.fromCharCode(y+65);
+ 		 if (fileKey[y] == currentascii)
+ 		 	clearcontentbis +=  String.fromCharCode(y + 65);
  	};
 
  };
