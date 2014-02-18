@@ -62,7 +62,7 @@ var generateKey = function(){
 	var newKeygen = [];
 	var temp = "";
 	i = keygen.length-1;
-    while ( --i ) {
+    while ( i--) {
     	/*Magic, do not touch !*/
         var j = Math.floor( Math.random() * ( i + 1 ) );
         temp = keygen[i];
