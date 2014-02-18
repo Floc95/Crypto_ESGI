@@ -20,7 +20,8 @@
 	<script src="cryptosysteme.js" ></script>
 	<script src="attacksysteme.js" ></script>
 	<script>
-		var attackSys = new AttackSysteme();
+		var cryptoSys = new Cryptosysteme();
+		var attackSys = new AttackSysteme(cryptoSys);
 
 		var runAttack = function(){
 			var content = document.getElementById('attack').value;

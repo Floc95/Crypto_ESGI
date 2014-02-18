@@ -3,7 +3,7 @@ function Cryptosysteme()
 	var self = this;
 
 	self.getKeyMap = function(key){
-		var map = [];
+		var map = {};
 		for (var i = 0; i < key.length; i++) {
 			if (i < 26)
 				map[key[i]] = String.fromCharCode(i + 65);
@@ -18,7 +18,7 @@ function Cryptosysteme()
 	};
 
 	self.getValueMap = function(key){
-		var map = [];
+		var map = {};
 		for (var i = 0; i < key.length; i++) {
 			if (i < 26)
 				map[String.fromCharCode(i + 65)] = key[i];
