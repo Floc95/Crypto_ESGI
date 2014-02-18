@@ -51,8 +51,23 @@ var decode = function(source, key){
 }
 
 var generateKey = function(){
-	
-};
+	var keygen = [];
+	for (var i = 0; i<27; i++){
+		keygen.push(String.fromCharCode(65+i));
+	}
+	var newKeygen = [];
+	var temp = "";
+	i--;
+    while ( --i ) {
+    	/*Magic, do not touch !*/
+        var j = Math.floor( Math.random() * ( i + 1 ) );
+        temp = keygen[i];
+        newKeygen[i] = keygen[j];
+        keygen[j] = temp;
+    }
+    return newKeygen;
+
+}
 
 var keygen = generateKey();
 
