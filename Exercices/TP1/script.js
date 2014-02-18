@@ -66,10 +66,10 @@ var generateKey = function(){
         keygen[j] = temp;
     }
     return newKeygen;
-
 }
 
 var keygen = generateKey();
+document.getElementById('key').value = keygen;
 
 var runEncode = function(){
 	var clair = document.getElementById('clair').value;
