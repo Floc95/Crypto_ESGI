@@ -1,0 +1,31 @@
+<html>
+	<header>
+		<meta charset="utf-8">
+	</header>
+	<body>
+		<div>
+			<h5>Texte encode</h5>
+			<textarea id="crypted"></textarea>
+			<button onClick="runAttack();" >Attaquer</button>
+		</div>
+		<div>
+			<h5>Texte decode</h5>
+			<textarea id="reclair"></textarea>
+		</div>
+		<div>
+			<h5>Cle decode</h5>
+			<textarea id="cledecode"></textarea>
+		</div>
+	</body>
+	<script src="attacksysteme.js" ></script>
+	<script>
+		var attackSys = new AttackSysteme();
+
+		var runAttack = function(){
+			var content = document.getElementById('crypted').value;
+			var res = attackSys.attack(content);
+			document.getElementById('reclair').value = res;
+			document.getElementById('cledecode').value = attackSys.key;
+		};
+	</script>
+</html>
