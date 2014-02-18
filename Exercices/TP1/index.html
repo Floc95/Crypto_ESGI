@@ -21,18 +21,23 @@
 			<h5>Texte decode</h5>
 			<textarea id="reclair"></textarea>
 		</div>
-		<hr />
-		<div>
-			<h5>Texte a attaquer</h5>
-			<textarea id="attack"></textarea>
-			<button onClick="runAttack();" >Decoder</button>
-		</div>
-		<div>
-			<h5>Resultat de l'attaque</h5>
-			<textarea id="resAttack"></textarea>
-		</div>
 	</body>
 	<script src="cryptosysteme.js" ></script>
-	<script src="attacksysteme.js" ></script>
-	<script src="script.js" ></script>
+	<script>
+		var cryptoSys = new Cryptosysteme();
+		document.getElementById('key').value = cryptoSys.keygen;
+
+
+		var runEncode = function(){
+			var clair = document.getElementById('clair').value;
+			var crypted = cryptoSys.encode(clair, cryptoSys.keygen);
+			document.getElementById('crypted').value = crypted;
+		};
+
+		var runDecode = function(){
+			var crypted = document.getElementById('crypted').value;
+			var clair = cryptoSys.decode(crypted, cryptoSys.keygen);
+			document.getElementById('reclair').value = clair;
+		};
+	</script>
 </html>

@@ -1,0 +1,27 @@
+<html>
+	<header>
+		
+	</header>
+	<body>
+		<div>
+			<h5>Texte a attaquer</h5>
+			<textarea id="attack"></textarea>
+			<button onClick="runAttack();" >Decoder</button>
+		</div>
+		<div>
+			<h5>Resultat de l'attaque</h5>
+			<textarea id="resAttack"></textarea>
+		</div>
+	</body>
+	<script src="cryptosysteme.js" ></script>
+	<script src="attacksysteme.js" ></script>
+	<script>
+		var attackSys = new AttackSysteme();
+
+		var runAttack = function(){
+			var content = document.getElementById('attack').value;
+			var res = attackSys.attack(content);
+			document.getElementById('resAttack').value = res;
+		};
+	</script>
+</html>
