@@ -3,8 +3,19 @@
 		<script src="script.js" ></script>
 	</header>
 	<body>
-		<div id="result"></div>
-		<div id="resultbis"></div>
+		<div>
+			<h5>Texte clair</h5>
+			<textarea id="clair"></textarea>
+			<button onClick="runEncode();" >Encoder</button>
+		</div>
+		<div>
+			<h5>Texte encodé</h5>
+			<textarea id="crypted"></textarea>
+			<button onClick="runDecode();" >Décoder</button>
+		</div>
+		<div>
+			<h5>Texte décodé</h5>
+			<textarea id="reclair"></textarea>
+		</div>
 	</body>
-	<script type="text/javascript">run();</script>
 </html>

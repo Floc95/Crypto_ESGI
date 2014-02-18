@@ -1,8 +1,3 @@
-
-var clair = "COUCOU";
-var key = "QSDFGHJKLMPOIUYTREZAWXCVBN098";
-var crypt = "";
-
 var getKeyMap = function(key){
 	var map = [];
 	for (var i = 0; i < key.length; i++) {
@@ -43,32 +38,32 @@ var convertWithMap = function(source, map)
 	return result;
 }
 
-var encode = function(fileSrc, fileKey){
-
-	var key = fileKey; // Lire le contenu du fichier
-	var source = fileSrc; // Lire le contenu du fichier
+var encode = function(source, key){
 	var map = getValueMap(key);
 
 	return convertWithMap(source, map);
 }
 
-var decode = function(fileSrc, fileKey){
-
-	var key = fileKey; // Lire le contenu du fichier
-	var source = fileSrc; // Lire le contenu du fichier
+var decode = function(source, key){
 	var map = getKeyMap(key);
 
 	return convertWithMap(source, map);
 }
 
 var generateKey = function(){
-
+	
 };
- var run = function(){
- 	crypt = encode(clair,key);
- 	document.getElementById('result').innerHTML = crypt;
- 	var decoderesult = decode(crypt, key);
- 	document.getElementById('resultbis').innerHTML = decoderesult	;
 
- };
+var keygen = generateKey();
 
+var runEncode = function(){
+	var clair = document.getElementById('clair').value;
+	var crypted = encode(clair, keygen);
+	document.getElementById('crypted').value = crypted;
+};
+
+var runDecode = function(){
+	var crypted = document.getElementById('crypted').value;
+	var clair = decode(crypted, keygen);
+	document.getElementById('reclair').value = clair;
+};
