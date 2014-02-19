@@ -1,0 +1,88 @@
+<html>
+	<header>
+		<meta charset="utf-8">
+	</header>
+	<body>
+		<div>
+			<h5>Cle</h5>
+			<textarea id="key"></textarea>
+		</div>
+		<div>
+			<h5>Décalage</h5>
+			<textarea id="decal"></textarea>
+		</div>
+		<div>
+			<h5>Texte clair</h5>
+			<textarea id="clair"></textarea>
+			<button onClick="runEncode();" >Encoder</button>
+		</div>
+		<div>
+			<h5>Texte encode</h5>
+			<textarea id="crypted"></textarea>
+			<button onClick="runDecode();" >Decoder</button>
+		</div>
+		<div>
+			<h5>Texte decode</h5>
+			<textarea id="reclair"></textarea>
+		</div>
+	</body>
+	<script src="cryptosysteme.js" ></script>
+	<script>
+		var cryptoSys = new Cryptosysteme();
+		cryptoSys.keygen = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', ' ', '.', ','];
+		document.getElementById('key').value = cryptoSys.keygen;
+
+		var removeDiacritics = function(s) {
+		    var diacritics = [
+		    /[\300-\306]/g, /[\340-\346]/g, // A, a
+		    /[\310-\313]/g, /[\350-\353]/g, // E, e
+		    /[\314-\317]/g, /[\354-\357]/g, // I, i
+		    /[\322-\330]/g, /[\362-\370]/g, // O, o
+		    /[\331-\334]/g, /[\371-\374]/g,  // U, u
+		    /[\321]/g, /[\361]/g, // N, n
+		    /[\307]/g, /[\347]/g, // C, c
+		    ];
+
+		    var chars = ['A', 'a', 'E', 'e', 'I', 'i', 'O', 'o', 'U', 'u', 'N', 'n', 'C', 'c'];
+
+		    for (var i = 0; i < diacritics.length; i++) {
+		        s = s.replace(diacritics[i], chars[i]);
+		    }
+
+		    var charsSpec = ['-', '&', '"', '!', '?', ';', '(', ')', '’', '1', '8', '0', '…', 'œ', 'ü', '2', '3', '4', '5', '6', '7', '9', '@', '#', '{', '}', '$', '€', '\n', '\r', ':'];
+		    for (var i = 0; i < charsSpec.length; i++) {
+		    	s = s.replace(charsSpec[i], " ");
+		    };
+
+		    return s;
+		};
+
+		var runEncode = function(){
+			var decal = document.getElementById('decal').value;
+			var decalage = cryptoSys.keygen.indexOf(decal) + 1;
+			var keygen = [];
+			for (var i = 0; i < cryptoSys.keygen.length; i++) {
+				var index = cryptoSys.keygen.length - decalage + i;
+				if (index >= cryptoSys.keygen.length)
+					index = index - cryptoSys.keygen.length;
+				keygen[i] = cryptoSys.keygen[index];
+			};
+
+			cryptoSys.keygen = keygen;
+			document.getElementById('key').value = cryptoSys.keygen;
+
+			var clair = document.getElementById('clair').value;
+			clair = removeDiacritics(clair);
+			clair = clair.toUpperCase();
+
+			var crypted = cryptoSys.encode(clair, cryptoSys.keygen);
+			document.getElementById('crypted').value = crypted;
+		};
+
+		var runDecode = function(){
+			var crypted = document.getElementById('crypted').value;
+			var clair = cryptoSys.decode(crypted, cryptoSys.keygen);
+			document.getElementById('reclair').value = clair;
+		};
+	</script>
+</html>
