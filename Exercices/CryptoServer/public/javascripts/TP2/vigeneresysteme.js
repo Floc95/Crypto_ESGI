@@ -21,10 +21,14 @@ function VigenereSysteme()
 		var result = "";
 		var keyIdx = 0;
 		for (var i = 0; i < source.length; i++) {
-			if (keyIdx >= self.key.length)
-				keyIdx = 0;
-			result += self.getDecalAlphaOf(source[i], self.map[self.key[keyIdx]]);
-			keyIdx++;
+			if (source[i] >= 'A' && source[i] <= 'Z') {
+				if (keyIdx >= self.key.length)
+					keyIdx = 0;
+				result += self.getDecalAlphaOf(source[i], self.map[self.key[keyIdx]], 1);
+				keyIdx++;
+			}
+			else
+				result += source[i];
 		};
 		return result;
 	}
@@ -33,10 +37,17 @@ function VigenereSysteme()
 		var result = "";
 		var keyIdx = 0;
 		for (var i = 0; i < source.length; i++) {
-			if (keyIdx >= self.key.length)
-				keyIdx = 0;
-			result += self.getDecalAlphaOf(source[i], self.map[self.key[keyIdx]]);
-			keyIdx++;
+			if (source[i] >= 'A' && source[i] <= 'Z') {
+				if (keyIdx >= self.key.length)
+					keyIdx = 0;
+				var idx = self.map[source[i]] - self.map[self.key[keyIdx]];
+				if (idx < 0)
+					idx = self.alpha.length + idx;
+				result += self.alpha[idx];
+				keyIdx++;
+			}
+			else
+				result += source[i];
 		};
 		return result;
 	}
