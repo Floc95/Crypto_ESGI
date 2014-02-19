@@ -9,14 +9,6 @@ function VigenereSysteme()
 		self.map[self.alpha[i]] = i;
 	};
 
-	self.getDecalAlphaOf = function(charact, decalage)
-	{
-		var index = decalage + self.map[charact];
-		if (index >= self.alpha.length)
-			index = index - self.alpha.length;
-		return self.alpha[index];
-	};
-
 	self.encode = function(source){
 		var result = "";
 		var keyIdx = 0;
@@ -24,7 +16,7 @@ function VigenereSysteme()
 			if (source[i] >= 'A' && source[i] <= 'Z') {
 				if (keyIdx >= self.key.length)
 					keyIdx = 0;
-				result += self.getDecalAlphaOf(source[i], self.map[self.key[keyIdx]], 1);
+				result += self.alpha[(self.map[source[i]] + self.map[self.key[keyIdx]]) % 26];
 				keyIdx++;
 			}
 			else
@@ -40,10 +32,7 @@ function VigenereSysteme()
 			if (source[i] >= 'A' && source[i] <= 'Z') {
 				if (keyIdx >= self.key.length)
 					keyIdx = 0;
-				var idx = self.map[source[i]] - self.map[self.key[keyIdx]];
-				if (idx < 0)
-					idx = self.alpha.length + idx;
-				result += self.alpha[idx];
+				result += self.alpha[(26 + self.map[source[i]] - self.map[self.key[keyIdx]]) % 26];
 				keyIdx++;
 			}
 			else
