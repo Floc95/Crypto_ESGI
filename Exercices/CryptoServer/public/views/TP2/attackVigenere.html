@@ -1,16 +1,25 @@
 <html>
 
 	<head>
-		
+		<style type="text/css">
+			textarea {
+				height: 100px;
+				width: 300px;
+			}
+		</style>
 	</head>
 	<body>
+		Texte a decripter
 		<div>
-			<textarea id="source"></textarea>
-			<button onClick="runDecode();">Decode</button>
+			<textarea id="source" width="200" height="400"></textarea>
+			<button onClick="runDecode();" >Decode</button>
 		</div>
+		Clé
 		<div>
-			<textarea id="key"></textarea>
+			<textarea id="key" style="height:35px"></textarea>
 		</div>
+		</br>
+		Texte decripté
 		<div>
 			<textarea id="result"></textarea>
 		</div>
