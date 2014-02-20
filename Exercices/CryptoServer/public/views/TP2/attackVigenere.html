@@ -1,0 +1,32 @@
+<html>
+
+	<head>
+		
+	</head>
+	<body>
+		<div>
+			<textarea id="source"></textarea>
+			<button onClick="runDecode();">Decode</button>
+		</div>
+		<div>
+			<textarea id="key"></textarea>
+		</div>
+		<div>
+			<textarea id="result"></textarea>
+		</div>
+	</body>
+	<script src="/javascripts/TP2/decryptVigenere.js" ></script>
+	<script src="/javascripts/cryptosysteme.js" ></script>
+	<script src="/javascripts/attackCesar.js" ></script>
+	<script>
+		var cryptoSys = new Cryptosysteme();
+		var attackCesar = new AttackCesar(cryptoSys);
+		var attackVigenere = new AttackVigenere(attackCesar);
+		
+		var runDecode = function(){
+			var todecode = document.getElementById('source').value;
+			document.getElementById('result').value = attackVigenere.attack(todecode);//remplacer par todecode
+			//document.getElementById('key').value = "...";//remplacer par todecode
+		}
+	</script>
+</html>
