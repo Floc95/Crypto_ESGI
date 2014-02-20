@@ -67,7 +67,6 @@ function Cryptosysteme()
 		var temp = "";
 		i = keygen.length-1;
 	    while ( i--) {
-	    	/*Magic, do not touch !*/
 	        var j = Math.floor( Math.random() * ( i + 1 ) );
 	        temp = keygen[i];
 	        newKeygen[i] = keygen[j];
