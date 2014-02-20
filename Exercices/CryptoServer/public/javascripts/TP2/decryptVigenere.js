@@ -7,17 +7,13 @@ function AttackVigenere(){
 	self.alpha = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
 	self.map = {};
 
-	for (var i = 0; i < self.alpha.length; i++) {
+	for (var i = 0; i < self.alpha.length; i++)
 		self.map[self.alpha[i]] = i;
-	};
 
 	self.attack = function(source){
-
+		var sequencemap = {}, lengthkey = 0;
 		self.textdecode = "";
 		self.key = "";
-		var sequencemap = {};
-		var lengthkey = 0;
-
 	 	sequencemap = self.getSequence(source);
 	 	lengthkey = self.getLengthKey(sequencemap);
 	 	self.getKey(source, lengthkey);
@@ -48,15 +44,10 @@ function AttackVigenere(){
 
 	self.getFrequenceMap = function(text){
 		var map = {}, sorted = [], length = 0;
-		for (var i = 0; i < text.length; i++) {
-			if (!map[text[i]])
-				map[text[i]] = 1;
-			else
-				map[text[i]]++;
-		}
+		for (var i = 0; i < text.length; i++)
+			map[text[i]] = map[text[i]] ? map[text[i]] + 1 : 1;
 		for (var k in map)
 			sorted.push([k, map[k] / text.length]);
-		
 		sorted = sorted.sort(function (a, b) { 
 			return (a[1] < b[1]) ? 1 : (a[1] > b[1]) ? -1 : 0; 
 		});
@@ -64,8 +55,7 @@ function AttackVigenere(){
 	};
 
 	self.getKey = function(source, keylength){
-		var key = [];
-		var newSource = "";
+		var key = [], newSource = "";
 		for (var i = 0; i < source.length; i++)
 			if (source[i] >= 'A' && source[i] <= 'Z')
 				newSource += source[i];
@@ -78,17 +68,14 @@ function AttackVigenere(){
 			var decal = (26 + (self.map[freqMap[0][0]] - self.map['E']))%26;
 			key.push(self.alpha[decal]);
 		};
-
 		self.key = key;
 	};
 
 	self.getSequence = function(FileEncrypted){
-		//Parcourir le string et trouver les fréquences se rétant;
-		var _sequencemap = new Array();
-		var currentsequence;
+		var _sequencemap = new Array(), currentsequence, _analysisresult = {};
 	
 		for (var i = 0; i < FileEncrypted.length; i++) {
-			if (FileEncrypted[i+2]!=""){
+			if (FileEncrypted[i+2] != ""){
 				currentsequence = FileEncrypted[i] + FileEncrypted[i+1] + FileEncrypted [i+2];
 				_sequencemap[i] = new Array();
 		 		_sequencemap[i][0] = currentsequence;
@@ -96,24 +83,18 @@ function AttackVigenere(){
 			}
 		};
 
-		var _sequenceresult = self.gettablespace(_sequencemap); //sequence + esapcements
-		var _analysisresult = {};
+		var _sequenceresult = self.gettablespace(_sequencemap);
 
-		//Ajoute tous les éléments viables dans une nouvelle map
-		for (var sr in _sequenceresult){
-			if (_sequenceresult[sr].length>=2){
-				var equals = self.equalsequence(_sequenceresult[sr]);
-				_analysisresult[sr] = equals;
-			}	
-		};
+		for (var sr in _sequenceresult)
+			if (_sequenceresult[sr].length >= 2)
+				_analysisresult[sr] = _sequenceresult[sr][1] - _sequenceresult[sr][0];
 		return _analysisresult;
-
 	};
 
 	self.getLengthKey = function(map){
 		var factors = [];
 		for (var m in map)
-			for (var i = 2; i < 21; i++)
+			for (var i = 2; i < 21; i++) {
 				if (map[m]%i == 0)
 				{
 					if (!factors[i]){
@@ -121,23 +102,16 @@ function AttackVigenere(){
 						factors[i].myKey = i;
 						factors[i].myValue = 1;
 					}
-					else {
-						factors[i].myValue += 1;	
-					}
+					else
+						factors[i].myValue += 1;
 				}
+			}
 
-		return factors.sort(function(a, b){
-				if (a.myValue < b.myValue)
-					return 1;
-				else if (a.myValue > b.myValue)
-					return -1;
-				return 0;
-			})[0].myKey;
+		return factors.sort(function(a, b){ return a.myValue < b.myValue ? 1 : a.myValue > b.myValue ? -1 : 0;})[0].myKey;
 	};
 
 	self.gettablespace = function(sequences){
 		var tablespace = {};
-
 		for (var i = 0; i < sequences.length; i++) {
 			if (!tablespace[sequences[i][0]])			
 				tablespace[sequences[i][0]] = [];
@@ -145,12 +119,4 @@ function AttackVigenere(){
 		};
 		return tablespace;
 	};
-
-
-
-	self.equalsequence = function(indexs){
-		var range = indexs[1]-indexs[0];
-		return range;
-	};
-
 };
