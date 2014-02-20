@@ -1,2 +1,0 @@
-Soit les fichiers suivant: clair.txt key.txt. Coder	les	fonctions generateKey(), encode(File src, File dst, File key), decode(File src, File dst, File key). La	clé	contiendra les	permutations	
-pour	chacun	des	symboles.
