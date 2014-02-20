@@ -153,12 +153,4 @@ function AttackVigenere(){
 		return range;
 	};
 
-	self.searchIn = function(map, caract){
-		for (var i = 0; i < map.length; i++) {
-			if (map[i].myKey == caract)
-				return map[i];
-		};
-		return null;
-	};
-
 };
