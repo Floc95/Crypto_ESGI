@@ -16,17 +16,17 @@
 		</div>
 	</body>
 	<script src="/javascripts/TP2/decryptVigenere.js" ></script>
-	<script src="/javascripts/cryptosysteme.js" ></script>
-	<script src="/javascripts/attackCesar.js" ></script>
+	<script src="/javascripts/TP2/vigeneresysteme.js" ></script>
 	<script>
-		var cryptoSys = new Cryptosysteme();
-		var attackCesar = new AttackCesar(cryptoSys);
-		var attackVigenere = new AttackVigenere(attackCesar);
+		var attackVigenere = new AttackVigenere();
+		var vigenereSys = new VigenereSysteme();
 		
 		var runDecode = function(){
-			var todecode = document.getElementById('source').value;
-			document.getElementById('result').value = attackVigenere.attack(todecode);//remplacer par todecode
-			//document.getElementById('key').value = "...";//remplacer par todecode
+			var crypted = document.getElementById('source').value;
+			attackVigenere.attack(crypted);
+			vigenereSys.key = attackVigenere.key;
+			document.getElementById('result').value = vigenereSys.decode(crypted);
+			document.getElementById('key').value = attackVigenere.key;
 		}
 	</script>
 </html>
