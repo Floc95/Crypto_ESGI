@@ -6,6 +6,7 @@ function TranspoSysteme(){
 	self.encode = function(source){
 		var spaceAdds = self.key.length - (source.length % self.key.length);
 		var res = new Array(spaceAdds == 0 ? source.length : source.length + spaceAdds);
+		
 		for (var i = 0; i < spaceAdds; i++)
 			source += " ";
 
