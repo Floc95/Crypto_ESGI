@@ -1,0 +1,35 @@
+<html>
+	<head>
+		
+		<script type="text/javascript">
+
+		</script>
+	</head>
+	<body>
+		<div>
+			<h5>Lecture</h5>
+			<textarea id="lecture" disabled="true"></textarea>
+			<button onClick="runRead();" >Lire</button>
+		</div>
+		<div>
+			<h5>Ecriture</h5>
+			<textarea id="ecriture"></textarea>
+			<button onClick="runWrite();" >Ecrire</button>
+		</div>
+		<div>
+			<h5>Affichage du fichier</h5>
+			<textarea id="file" disabled="true"></textarea>
+		</div>
+	</body>
+	<script src="/javascripts/file.js"></script>
+	<script>
+		var file = new File();
+		var runRead = function(){
+			document.getElementById("lecture").value = file.read();
+		};
+
+		var runWrite = function(){
+
+		};
+	</script>
+</html>
