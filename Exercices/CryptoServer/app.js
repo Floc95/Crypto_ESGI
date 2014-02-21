@@ -31,7 +31,14 @@ app.post('/', function(request, response){
     console.log(mail.green);
     response.redirect('');
     */
-    var test = require('./server/user');
-    test.addUser(name + " " + mail);
+    var user = require('./server/user');
+    user.addUser(name + " " + mail);
     response.redirect('');
+});
+
+app.post('/createFile', function(request, response){
+	var fileName = request.body.file.name;
+	var user = require('./server/user');
+	user.createDataUser(fileName);
+	response.redirect('');
 });
