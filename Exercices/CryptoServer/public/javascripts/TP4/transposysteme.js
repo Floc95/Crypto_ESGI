@@ -4,9 +4,9 @@ function TranspoSysteme(){
 	self.key = null;
 
 	self.encode = function(source){
-		var mod = self.key.length - (source.length % self.key.length);
-		var res = new Array(mod == 0 ? source.length : source.length + mod);
-		for (var i = 0; i < mod; i++)
+		var spaceAdds = self.key.length - (source.length % self.key.length);
+		var res = new Array(spaceAdds == 0 ? source.length : source.length + spaceAdds);
+		for (var i = 0; i < spaceAdds; i++)
 			source += " ";
 
 		for (var i = 0, j = 0; i < source.length; j++, i++)
@@ -32,33 +32,12 @@ function TranspoSysteme(){
 
 		// Permutations
 		for (var i = 0; i < length; i++) {
+			var rdm = Math.floor(Math.random() * (length - 1));
 			var tmp = keygen[i];
-			var j = Math.floor(Math.random() * (length - 1));
-			keygen[i] = keygen[j];
-			keygen[j] = tmp;
+			keygen[i] = keygen[rdm];
+			keygen[rdm] = tmp;
 		}
 
 	    self.key = keygen;
 	}
-
-	/*self.longToByteArray = function(long) {
-	    var byteArray = [0, 0, 0, 0, 0, 0, 0, 0];
-
-	    for ( var index = 0; index < byteArray.length; index ++ ) {
-	        var byte = long & 0xff;
-	        byteArray [ index ] = byte;
-	        long = (long - byte) / 256 ;
-	    }
-
-	    return byteArray;
-	};
-
-	self.byteArrayToLong = function(byteArray) {
-	    var value = 0;
-	    for ( var i = byteArray.length - 1; i >= 0; i--) {
-	        value = (value * 256) + byteArray[i];
-	    }
-
-	    return value;
-	};*/
 }
