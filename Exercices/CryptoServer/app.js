@@ -38,7 +38,11 @@ app.post('/', function(request, response){
 
 app.post('/createFile', function(request, response){
 	var fileName = request.body.file.name;
-	var user = require('./server/user');
-	user.createDataUser(fileName);
+	require('./server/user').createDataUser(fileName);
 	response.redirect('');
+});
+
+app.get('/autoindex', function(request, response){
+	console.log('Entree autoindex'.green);
+	response.end(require('./server/index').getLinks());
 });
