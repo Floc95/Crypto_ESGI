@@ -6,12 +6,12 @@ function TranspoSysteme(){
 	self.encode = function(source){
 		var spaceAdds = self.key.length - (source.length % self.key.length);
 		var res = new Array(spaceAdds == 0 ? source.length : source.length + spaceAdds);
-		
+
 		for (var i = 0; i < spaceAdds; i++)
 			source += " ";
 
-		for (var i = 0, j = 0; i < source.length; j++, i++)
-			res[(i - (i % self.key.length)) + self.key[j % self.key.length]] = source[i];
+		for (var i = 0; i < source.length; i++)
+			res[(self.key.length * Math.floor(i / self.key.length)) + self.key[i % self.key.length]] = source[i];
 
 		return res.join("");
 	}
@@ -19,8 +19,8 @@ function TranspoSysteme(){
 	self.decode = function(source){
 		var res = new Array(source.length);
 
-		for (var i = 0, j = 0; i < source.length; j++, i++)
-			res[i] = source[(i - (i % self.key.length)) + self.key[j % self.key.length]];
+		for (var i = 0; i < source.length; i++)
+			res[i] = source[(self.key.length * Math.floor(i / self.key.length)) + self.key[i % self.key.length]];
 
 		return res.join("").trim();
 	}
