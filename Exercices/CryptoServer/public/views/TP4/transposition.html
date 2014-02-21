@@ -1,0 +1,52 @@
+<html>
+	<header>
+		<meta charset="utf-8">
+	</header>
+	<body>
+		<div>
+			<h5>Longueur de la clé</h5>
+			<textarea id="keylength"></textarea>
+		</div>
+		<div>
+			<h5>Clé genéré</h5>
+			<textarea id="key"></textarea>
+			<button onClick="runKeygen();" >Générer</button>
+		</div>
+		<div>
+			<h5>Texte clair</h5>
+			<textarea id="clair"></textarea>
+			<button onClick="runEncode();" >Encoder</button>
+		</div>
+		<div>
+			<h5>Texte encodé</h5>
+			<textarea id="crypted"></textarea>
+			<button onClick="runDecode();" >Decoder</button>
+		</div>
+		<div>
+			<h5>Texte decodé</h5>
+			<textarea id="reclair"></textarea>
+		</div>
+	</body>
+	<script src="/javascripts/TP4/transposysteme.js" ></script>
+	<script>
+		var transpoSys = new TranspoSysteme();
+
+		var runKeygen = function() {
+			var length = document.getElementById('keylength').value;
+			transpoSys.generateKey(length);
+			document.getElementById('key').value = transpoSys.key.join("");
+		};
+
+		var runEncode = function(){
+			var clair = document.getElementById('clair').value;
+			var crypted = transpoSys.encode(clair);
+			document.getElementById('crypted').value = crypted;
+		};
+
+		var runDecode = function(){
+			var crypted = document.getElementById('crypted').value;
+			var clair = transpoSys.decode(crypted);
+			document.getElementById('reclair').value = clair;
+		};
+	</script>
+</html>
