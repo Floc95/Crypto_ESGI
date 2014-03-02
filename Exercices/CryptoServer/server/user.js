@@ -19,35 +19,14 @@ function User(){
 
         var currentcontent = fs.readFileSync(file,'utf8');
         var r  = fs.readFile(file); //Obliger de faire fonctionner les 2 pour du json (???)
-
-        console.log('Content: '+currentcontent);
         var data = JSON.parse(currentcontent);
-        console.log(data.users[1].password);
 
-        for(var i = 0; i < data.users.length; i++) {
-            var obj = data.users[i];
-
-            console.log('Data : '+obj.user);
-        }
-
-        //var newdata = JSON.stringify(self);
-        //var datatoset = newdata.split('"').join("");
-        //console.log("Data to set : "+newdata.split('').join(""));
-        //data.users[i] = "["+newdata+"]".split('\\').join("");
-        data.users[i] = {
+        data.users[data.users.length] = {
             "login" : self.login,
             "password" : self.password,
             "type" : self.type,
             "sid" : self.sid
         }
-
-        for(var y = 0; y < data.users.length; y++) {
-            var obj = data.users[y];
-
-            console.log('Data 2 : '+obj.user);
-        }
-
-        console.log("Final data : "+JSON.stringify(data));
 
         fs.writeFileSync(file, JSON.stringify(data) , "UTF-8");
     };
@@ -67,6 +46,17 @@ function User(){
     self.userExist = function(_user){
         console.log('Entrée : userExist');
 
+        var fs = require('fs');
+        var file = "./server/data/users.json";
+
+        var currentcontent = fs.readFileSync(file,'utf8');
+        var r  = fs.readFile(file);
+        var data = JSON.parse(currentcontent);
+
+        for(var y = 0; y < data.users.length; y++)
+            if (data.users[y].login === _user)
+                return false;   //Retourne false si un utilisateur du même nom est trouvé
+        return true;
 
     };
 

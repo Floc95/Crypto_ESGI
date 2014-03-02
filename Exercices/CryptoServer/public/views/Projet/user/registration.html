@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+</head>
+<body>
+    <form method="post" action="/registration">
+        <p>
+            Login : <input type="text" name="user[login]"></br>
+            Password : <input type="password" name="user[password]">
+        </p>
+        Type d'utilisateur :
+        <select name="user[type]">
+            <option value="0">Administrateur</option>
+            <option value="1">Utilisateur</option>
+        </select>
+
+        <input type="submit" value="Enregistrement">
+    </form>
+</body>
+</html>

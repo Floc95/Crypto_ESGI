@@ -64,14 +64,25 @@ var express = require('express'),
         response.redirect('');
     });
 
-    app.post('registration', function(request, response){
+    app.post('/registration', function(request, response){
         //TO DO : vérifier que l'utilisateur n'existe pas et l'enregistrer dans un fichier (.json)
-        var sessId = request.sessionID;
-        var userlogin = request.body.file.user[login];
-        var userpassword = request.body.file.user[password];
-        //vérifier que l'utilisateur exite
-        //si il existe, affecter le session id courant à l'utilisateur afin de le reconaitre, le supprimer à la déconnexion
-        //Pour chaque page sécurisé, vérifier si le session id est attribué à un utilisateur, sinon, recalé l'utilisateur courant
+        console.log('Entrée : post registration');
+        console.log(request.body.user.login);
+        var userlogin = request.body.user.login;
+        var userpassword = request.body.user.password;
+        var usertype = request.body.user.type;
+
+        var User = require('./server/user').User;
+        var currentUser = new User();
+        if (currentUser.userExist(userlogin)){
+            currentUser.createUser(userlogin,userpassword,usertype,request.sessionID);
+            console.log('Creation de l\'utilsateur : '.green+userlogin.green);
+            response.end('Le nouvel utilisateur a bien ete cree !');
+        }
+        else{
+            console.log('Un utilisateur possede deje le meme login'.red);
+            response.end('Un utilisateur possede deja le meme login');
+        }
 
     });
 
@@ -118,10 +129,8 @@ var express = require('express'),
     app.get('/user', function(request, response){
         console.log('Entrée : get user'.green)
         var User = require('./server/user').User;
-        console.log(User.red);
 
         var currentUser = new User();
-        console.log(currentUser.red);
         currentUser.createUser('pierre','4321','aaa',request.sessionID);
         console.log('Création de l\'utilsateur : '+currentUser);
         response.end(currentUser.printUserJSON());
