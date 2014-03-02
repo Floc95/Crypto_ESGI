@@ -67,7 +67,6 @@ var express = require('express'),
     app.post('/registration', function(request, response){
         //TO DO : vérifier que l'utilisateur n'existe pas et l'enregistrer dans un fichier (.json)
         console.log('Entrée : post registration');
-        console.log(request.body.user.login);
         var userlogin = request.body.user.login;
         var userpassword = request.body.user.password;
         var usertype = request.body.user.type;
@@ -86,10 +85,20 @@ var express = require('express'),
 
     });
 
-    app.post('login', function(request, response){
+    app.post('/login', function(request, response){
         //TO DO:  vérfifier que l'utilisateur existe et que le mot de passe est correct, si oui ouvrir une session
-        var userlogin = request.body.file.user[login];
-        var userpassword = request.body.file.user[password];
+        console.log(request.body);
+
+        var userlogin = request.body.user.login;
+        var userpassword = request.body.user.password;
+
+        var User = require('./server/user').User;
+        var currentUser = new User();
+
+        if (currentUser.userlog(userlogin, userpassword, request.sessionID))
+            response.end(userlogin + ' a ete loge avec succes');
+        else
+            response.end('Erreur');
 
     });
 
@@ -127,13 +136,12 @@ var express = require('express'),
     });
 
     app.get('/user', function(request, response){
-        console.log('Entrée : get user'.green)
-        var User = require('./server/user').User;
+        console.log('Entrée : get user'.green);
 
+        var User = require('./server/user').User;
         var currentUser = new User();
-        currentUser.createUser('pierre','4321','aaa',request.sessionID);
-        console.log('Création de l\'utilsateur : '+currentUser);
-        response.end(currentUser.printUserJSON());
+
+        response.end(currentUser.getCurrentUser(request.sessionID));
 
 
     });
