@@ -63,6 +63,7 @@ var express = require('express'),
         require('./server/user').createDataUser(fileName);
         response.redirect('');
     });
+
     app.post('registration', function(request, response){
         //TO DO : vérifier que l'utilisateur n'existe pas et l'enregistrer dans un fichier (.json)
         var sessId = request.sessionID;
@@ -73,6 +74,7 @@ var express = require('express'),
         //Pour chaque page sécurisé, vérifier si le session id est attribué à un utilisateur, sinon, recalé l'utilisateur courant
 
     });
+
     app.post('login', function(request, response){
         //TO DO:  vérfifier que l'utilisateur existe et que le mot de passe est correct, si oui ouvrir une session
         var userlogin = request.body.file.user[login];
@@ -95,6 +97,7 @@ var express = require('express'),
         links+='</body></html>'
         response.end(links);
     });
+
     app.get('/session', function(request, response){
         console.log('Entrée dans la fonction get session'.green);
         var index = (request.session.index || 0) + 1;
@@ -119,7 +122,7 @@ var express = require('express'),
 
         var currentUser = new User();
         console.log(currentUser.red);
-        currentUser.createUser('marine','1234','test',request.sessionID);
+        currentUser.createUser('pierre','4321','aaa',request.sessionID);
         console.log('Création de l\'utilsateur : '+currentUser);
         response.end(currentUser.printUserJSON());
 
