@@ -18,28 +18,35 @@
 		<!--[if lte IE 8]><link rel="stylesheet" href="/stylesheets/ie8.css" /><![endif]-->
 	</head>
 	<body>
-		<!-- Main -->
-			<div id="main">
-					 
-					<section id="top" class="one">
+		<!-- Main --> 
 						<div class="container">
+						<header>
+								<h2 class="alt">Page d'enregistrement</h2>
+						</header>
+							<form method="post" action="/signin">
+								<table>
+									<tr>
+										<td>Login</td>
+										<td><input type="text" name="user[login]"></td>
+									</tr>
+									<tr>
+										<td>Password</td>
+										<td><input type="password" name="user[password]"></td>
+									</tr>
+									<tr>
+										<td>Type d'utilisateur</td>
+										<td>
+											<select name="user[type]">
+									            <option value="0">Autorité d'enregistrement</option>
+									            <option value="1">Autorité de validation</option>
+									        </select>
+								        </td>
+								</table>
+								<div style="color: red;"><%= errormessage %></div>
 
-							<form method="post" action="/login">
-						        <p>
-						            Login : <input type="text" name="user[login]"></br>
-						            Password : <input type="password" name="user[password]">
-						        </p>
-						        <input type="submit" value="Log">
+						        <input type="submit" value="Enregistrement">
 						    </form>
-						</div>
-					</section>
-				
-			</div>
-					
-				
-
-		<!-- Footer -->
-			
+						</div>	
 
 	</body>
 </html>

@@ -8,7 +8,8 @@ function User(){
     self.sid = ''; //sessionid
 
     self.getUserType = function(){
-        if (self.usertype === 0)
+        console.log("Type : "+self.usertype);
+        if (self.usertype === "0")
             return "Autorité d'enregistrement";
         else
             return "Autorité de validation";
@@ -123,7 +124,7 @@ function User(){
         var data = JSON.parse(currentcontent);
 
         for(var y = 0; y < data.users.length; y++)
-            if (data.users[y].login === _login && data.users[y].password){
+            if (data.users[y].login === _login && data.users[y].password === _password){
                 data.users[y].sid = _sid;
                 fs.writeFileSync(file, JSON.stringify(data) , "UTF-8");
                 self.setUser(_login, _password, data.users[y].type, _sid);

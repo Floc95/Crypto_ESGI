@@ -52,12 +52,19 @@ app.configure(function () {
 //Fonction index permettant de rediriger la personne si celle ci est logé ou non
 app.get('/', function(request, response){
     response.render('login', {
+            message: '',
             errormessage: ''
         });
 });
 
 app.get('/login', function(request, response){
     response.redirect('/');
+});
+
+app.get('/signin', function(request, response){
+    response.render('signin', {
+        errormessage: ''
+    });
 });
 
 //Pour cette page, vérifier si la personne est logé, sinon la rediriger vers la page login
@@ -126,7 +133,7 @@ app.post('/createFile', function(request, response){
     response.redirect('');
 });
 
-app.post('/registration', function(request, response){
+app.post('/signin', function(request, response){
     //TO DO : vérifier que l'utilisateur n'existe pas et l'enregistrer dans un fichier (.json)
     console.log('Entrée : post registration');
     var userlogin = request.body.user.login;
@@ -138,11 +145,16 @@ app.post('/registration', function(request, response){
     if (currentUser.userExist(userlogin)){
         currentUser.createUser(userlogin,userpassword,usertype,request.sessionID);
         console.log('Creation de l\'utilsateur : '.green+userlogin.green);
-        response.end('Le nouvel utilisateur a bien ete cree !');
+         response.render('login', {
+            message: "Félicitation ! l'utilisateur a bien été créé !",
+            errormessage: ''
+        });
     }
     else{
         console.log('Un utilisateur possede deje le meme login'.red);
-        response.end('Un utilisateur possede deja le meme login');
+        response.render('signin', {
+            errormessage: 'Veuillez saisir un autre login'
+        });
     }
 
 });
@@ -164,7 +176,10 @@ app.post('/login', function(request, response){
         });
      }
     else
-        response.end('Erreur');
+        response.render('login', {
+            message: '',
+            errormessage: 'Login ou mot de passe incorrect !'
+        });
 
 });
 
