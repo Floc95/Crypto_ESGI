@@ -111,6 +111,10 @@ app.get('/user', function(request, response){
  *   POST
  */
 
+app.post('/logout'), function(request, response){
+    console.log('Logout'.green);
+    //TO DO
+};
 
 app.post('/', function(request, response){
     console.log('Entree dans add.post'.green);
