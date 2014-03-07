@@ -51,59 +51,32 @@ app.configure(function () {
 
 //Fonction index permettant de rediriger la personne si celle ci est logé ou non
 app.get('/', function(request, response){
-    response.render('login', {
-            message: '',
-            errormessage: ''
-        });
-});
-
-app.get('/login', function(request, response){
-    response.redirect('/');
+    var User = require('./server/user').User;
+    var currentUser = new User();
+    if (currentUser.userConnect(request.sessionID)){
+        currentUser.setUserBySid(request.sessionID);
+        response.render('administration', { username: currentUser.login, usertype: currentUser.getUserType() });
+    }
+    else
+        response.render('login', { message: '', errormessage: '' });
 });
 
 app.get('/signin', function(request, response){
-    response.render('signin', {
-        errormessage: ''
-    });
+
+    var User = require('./server/user').User;
+    var currentUser = new User();
+    if (currentUser.userConnect(request.sessionID)){
+        currentUser.setUserBySid(request.sessionID);
+        response.render('administration', { username: currentUser.login, usertype: currentUser.getUserType() });
+    }
+    else
+        response.render('signin', { errormessage: ''});
 });
 
 //Pour cette page, vérifier si la personne est logé, sinon la rediriger vers la page login
 app.get('/administration', function(request, response){
-    response.render('administration', {
-        username: "Nom Prenom",
-        usertype: "Type de l'utilisateur"
-    });
+    response.redirect('/');
 });
-
-
-app.get('/session', function(request, response){
-    console.log('Entrée dans la fonction get session'.green);
-    var index = (request.session.index || 0) + 1;
-    var sessId = request.sessionID;
-
-    response.end('<html><body><ul>' +
-        '<li>' + index + '</li>'+
-        '<li>' + sessId + '</li>'+
-        '</ul></body></html>');
-    //Le session id permet de différencier un utilisateur d'un autre, d'un navigateur à l'autre
-});
-
-app.get('/name/:name', function(request, response){
-    request.session.name = request.params.name;
-    response.send("<a href='/name'>GO</a>");
-});
-
-app.get('/user', function(request, response){
-    console.log('Entrée : get user'.green);
-
-    var User = require('./server/user').User;
-    var currentUser = new User();
-
-    response.end(currentUser.getCurrentUser(request.sessionID));
-
-
-});
-
 
 
 /**
@@ -111,30 +84,20 @@ app.get('/user', function(request, response){
  *   POST
  */
 
-app.post('/logout'), function(request, response){
+app.post('/logout', function(request, response){
     console.log('Logout'.green);
-    //TO DO
-};
 
-app.post('/', function(request, response){
-    console.log('Entree dans add.post'.green);
-    var name = request.body.user.name;
-    var mail = request.body.user.email;
-    /*
-    console.log(name.red);
-    console.log(mail.green);
-    response.redirect('');
-    */
-    var user = require('./server/user');
-    user.addUser(name + " " + mail);
-    response.redirect('');
-});
+    var User = require('./server/user').User;
+    var currentUser = new User();
 
-//Fonction permettant de créer un fichier en fonction d'éléments envoyés depuis un formulaire (/createFile)
-app.post('/createFile', function(request, response){
-    var fileName = request.body.file.name;
-    require('./server/user').createDataUser(fileName);
-    response.redirect('');
+    console.log(request.body.user);
+    currentUser.setUserBySid(request.sessionID);
+    if (currentUser.logout())
+        console.log('Déconnexion résussie !'.green);
+    else
+        console.log('Erreur lors de la déconnexion.'.red)
+
+    response.redirect('/');
 });
 
 app.post('/signin', function(request, response){
@@ -148,8 +111,7 @@ app.post('/signin', function(request, response){
     var currentUser = new User();
     if (currentUser.userExist(userlogin)){
         currentUser.createUser(userlogin,userpassword,usertype,request.sessionID);
-        console.log('Creation de l\'utilsateur : '.green+userlogin.green);
-         response.render('login', {
+        response.render('login', {
             message: "Félicitation ! l'utilisateur a bien été créé !",
             errormessage: ''
         });
@@ -186,6 +148,3 @@ app.post('/login', function(request, response){
         });
 
 });
-
-
-//Attention ! Bien spécifier dans l'utilisation des fonctions Sync (sinon asynchrone par défaut).
