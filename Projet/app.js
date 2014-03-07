@@ -11,12 +11,6 @@ var express = require('express'),
     app = express(),
     httpServer = http.createServer(app);
 
-
-/**
- *  Elements de configuration du serveur
- */
-
-//configuration du serveur (port, dossier affiché)
 app.configure(function () {
     app.set('port', 3000);
     app.use(express.static(__dirname + '/public'));
@@ -28,12 +22,8 @@ app.configure(function () {
 
     app.use(express.urlencoded()),
     app.use(express.cookieParser());
-    // Session management
     app.use(express.session({
-        // Private crypting key
         "secret": "some private string",
-        // Internal session data storage engine, this is the default engine embedded with connect.
-        // Much more can be found as external modules (Redis, Mongo, Mysql, file...). look at "npm search connect session store"
         "store":  new express.session.MemoryStore({ reapInterval: 60000 * 10 })
         }));
     });
@@ -55,19 +45,22 @@ app.get('/', function(request, response){
     var currentUser = new User();
     if (currentUser.userConnect(request.sessionID)){
         currentUser.setUserBySid(request.sessionID);
-        response.render('administration', { username: currentUser.login, usertype: currentUser.getUserType() });
+        response.render('administration', { username: currentUser.login, usertype: currentUser.getUserType(), 
+            typeaction: currentUser.getTypeMenu(), typeid: currentUser.getTypeMenu(), typelibelle: currentUser.getTypeMenuLibelle() });
     }
     else
         response.render('login', { message: '', errormessage: '' });
 });
 
+//Fonction permettant d'afficher le template d'enregistrement d'un nouvel utilisateur
 app.get('/signin', function(request, response){
 
     var User = require('./server/user').User;
     var currentUser = new User();
     if (currentUser.userConnect(request.sessionID)){
         currentUser.setUserBySid(request.sessionID);
-        response.render('administration', { username: currentUser.login, usertype: currentUser.getUserType() });
+        response.render('administration', { username: currentUser.login, usertype: currentUser.getUserType(), 
+            typeaction: currentUser.getTypeMenu(), typeid: currentUser.getTypeMenu(), typelibelle: currentUser.getTypeMenuLibelle() });
     }
     else
         response.render('signin', { errormessage: ''});
@@ -85,12 +78,8 @@ app.get('/administration', function(request, response){
  */
 
 app.post('/logout', function(request, response){
-    console.log('Logout'.green);
-
     var User = require('./server/user').User;
     var currentUser = new User();
-
-    console.log(request.body.user);
     currentUser.setUserBySid(request.sessionID);
     if (currentUser.logout())
         console.log('Déconnexion résussie !'.green);
@@ -102,7 +91,6 @@ app.post('/logout', function(request, response){
 
 app.post('/signin', function(request, response){
     //TO DO : vérifier que l'utilisateur n'existe pas et l'enregistrer dans un fichier (.json)
-    console.log('Entrée : post registration');
     var userlogin = request.body.user.login;
     var userpassword = request.body.user.password;
     var usertype = request.body.user.type;
@@ -127,19 +115,16 @@ app.post('/signin', function(request, response){
 
 app.post('/login', function(request, response){
     //TO DO:  vérfifier que l'utilisateur existe et que le mot de passe est correct, si oui ouvrir une session
-    console.log(request.body);
-
     var userlogin = request.body.user.login;
     var userpassword = request.body.user.password;
 
     var User = require('./server/user').User;
     var currentUser = new User();
-    console.log(currentUser.login);
     if (currentUser.userlog(userlogin, userpassword, request.sessionID)){
+        console.log("Connexion : "+ currentUser.login.green)
          response.render('administration', {
-            username: currentUser.login,
-            usertype: currentUser.getUserType()
-        });
+            username: currentUser.login, usertype: currentUser.getUserType(), codetype: currentUser.getTypeMenu(),
+            typeaction: currentUser.getTypeMenu(), typeid: currentUser.getTypeMenu(), typelibelle: currentUser.getTypeMenuLibelle() });
      }
     else
         response.render('login', {
@@ -147,4 +132,45 @@ app.post('/login', function(request, response){
             errormessage: 'Login ou mot de passe incorrect !'
         });
 
+});
+
+
+app.post('/administration', function(request, response){
+    console.log('administration'.red);
+    var User = require('./server/user').User;
+    var currentUser = new User();
+    if (currentUser.userConnect(request.sessionID)){
+        currentUser.setUserBySid(request.sessionID);
+        response.render('administration', { username: currentUser.login, usertype: currentUser.getUserType(), 
+            typeaction: currentUser.getTypeMenu(), typeid: currentUser.getTypeMenu(), typelibelle: currentUser.getTypeMenuLibelle() });
+    }
+    else
+        response.render('login', { message: '', errormessage: 'Erreur de connexion' });
+});
+
+app.post('/enregistrement', function(request, response){
+    console.log('enregistrement'.red);
+    var User = require('./server/user').User;
+    var currentUser = new User();
+    if (currentUser.userConnect(request.sessionID)){
+        currentUser.setUserBySid(request.sessionID);
+        response.render('enregistrement', { username: currentUser.login, usertype: currentUser.getUserType(), 
+            typeaction: currentUser.getTypeMenu(), typeid: currentUser.getTypeMenu(), typelibelle: currentUser.getTypeMenuLibelle() });
+    }
+    else
+        response.render('login', { message: '', errormessage: 'Erreur de connexion' });
+});
+
+app.post('/validation', function(request, response){
+   console.log('validation'.red);
+   console.log('enregistrement'.red);
+    var User = require('./server/user').User;
+    var currentUser = new User();
+    if (currentUser.userConnect(request.sessionID)){
+        currentUser.setUserBySid(request.sessionID);
+        response.render('validation', { username: currentUser.login, usertype: currentUser.getUserType(), 
+            typeaction: currentUser.getTypeMenu(), typeid: currentUser.getTypeMenu(), typelibelle: currentUser.getTypeMenuLibelle() });
+    }
+    else
+        response.render('login', { message: '', errormessage: 'Erreur de connexion' });
 });

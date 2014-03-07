@@ -1,5 +1,10 @@
-{"keys":
+{"certificats":
     [
-        {"certificat":"", "key":"","isValid":"true"}
+        {
+        	"privatekey":"",
+        	"publickey":"true",
+        	"signature": "",
+        	"statut": ""
+        }
     ]
 }

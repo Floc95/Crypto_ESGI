@@ -5,6 +5,10 @@ function Certificat(){
     //TO DO : classe permettant de générer et gérer les
     var self = this;
 
+    self.privatekey = '';
+    self.publickey = '';
+    self.signature = '';
+    self.statut = '';
 
     /*
         Génération d'une clé privée
@@ -22,7 +26,7 @@ function Certificat(){
     //Création d'un nouveau formulaire
     //Validation d'un formulaire
         //Délivrance du certificat
-        
+
 
     self.generatePrivateKey = function(){
         //Génration de la clé privée

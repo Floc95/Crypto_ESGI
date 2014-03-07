@@ -10,7 +10,6 @@ function User(){
 
     //Donne le libellé du type d'utilisateur
     self.getUserType = function(){
-        console.log("Type : "+self.usertype);
         if (self.usertype === "0")
             return "Autorité d'enregistrement";
         else
@@ -35,6 +34,25 @@ function User(){
         
         console.log('Erreur : Aucun utilisateur trouvé'.red);
         return false;
+
+    };
+
+    //Retourne le code html du menu d'administration en fonction du type d'utilisateur
+    self.getTypeMenu = function(){
+
+        if (self.usertype === "0")
+            return 'enregistrement';
+        else
+            return 'validation';
+
+    };
+
+     self.getTypeMenuLibelle = function(){
+
+        if (self.usertype === "0")
+            return 'Gérer les enregistrements';
+        else
+            return 'Gérer les validations';
 
     };
 
@@ -74,20 +92,16 @@ function User(){
 
     //Création d'un utilisateur
     self.createUser = function(user, password, usertype , sessionID){
-    console.log('Entrée : createUser');
-
-    self.login = user;
-    self.password = password;
-    self.usertype = usertype;
-    self.sid = sessionID;
-    //Ecrire dans un fichier
-    self.addUser();
+        self.login = user;
+        self.password = password;
+        self.usertype = usertype;
+        self.sid = sessionID;
+        //Ecrire dans un fichier
+        self.addUser();
     };
 
     //Ajoute un utilisateur dans le fichier user.json
     self.addUser = function(){
-        console.log('Entree dans addUser'.green);
-
         var fs = require('fs');
         var file = "./server/data/users.json";
 
@@ -108,8 +122,6 @@ function User(){
 
     //Retourn vrais si aucun utilisateur possédant le même login n'est trouvé dans le fichier
     self.userExist = function(_user){
-        console.log('Entrée : userExist');
-
         var fs = require('fs');
         var file = "./server/data/users.json";
 
@@ -127,8 +139,6 @@ function User(){
 
     //Vérifie si un utilisateur est connecté sur la session courante
     self.userConnect = function(_sessionID){
-        console.log('Entrée : userConnect');
-
         var fs = require('fs');
         var file = "./server/data/users.json";
 
@@ -143,28 +153,8 @@ function User(){
 
     };
 
-    //Retourne l'user courante : Pas utilisé (normalement)
-    self.getCurrentUser = function(_sid){
-        console.log('Entrée : getCurrentUser'.green);
-        var fs = require('fs');
-        var file = "./server/data/users.json";
-
-        var currentcontent = fs.readFileSync(file,'utf8');
-        var r  = fs.readFile(file);
-        var data = JSON.parse(currentcontent);
-
-        for(var y = 0; y < data.users.length; y++)
-            if (data.users[y].sid === _sid)
-                return '<html><body> Nom : '+ data.users[y].login + '<br>' + 'Type : ' + data.users[y].type + '</body></html>';
-        return "Aucun utilisateur trouve :(";
-
-        //fs.close();
-    };
-
-
     //Vérifie le login et le mot de passe et attribut la session id a l'utilisateur si ses identifiants sont bons
     self.userlog = function(_login, _password,_sid){
-        console.log('Entree : userlog');
         var fs = require('fs');
         var file = "./server/data/users.json";
 
