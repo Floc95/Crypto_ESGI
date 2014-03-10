@@ -12,8 +12,10 @@ function User(){
     self.getUserType = function(){
         if (self.usertype === "0")
             return "Autorité d'enregistrement";
-        else
+        else if (self.usertype === "1")
             return "Autorité de validation";
+        else 
+            return "Simple utilisateur"
     };
 
     //Cherche le login de l'utilisateur dans le fichier et définit ses attributs
@@ -42,8 +44,10 @@ function User(){
 
         if (self.usertype === "0")
             return 'enregistrement';
-        else
+        else if (self.usertype === "1")
             return 'validation';
+        else
+            return 'mycertificate';
 
     };
 
@@ -51,8 +55,10 @@ function User(){
 
         if (self.usertype === "0")
             return 'Gérer les enregistrements';
-        else
+        else if (self.usertype === "1")
             return 'Gérer les validations';
+        else
+            return 'Mon certificat';
 
     };
 

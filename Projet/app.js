@@ -45,7 +45,7 @@ app.get('/', function(request, response){
     var currentUser = new User();
     if (currentUser.userConnect(request.sessionID)){
         currentUser.setUserBySid(request.sessionID);
-        response.render('administration', { username: currentUser.login, usertype: currentUser.getUserType(), 
+        response.render('usercertificate', { username: currentUser.login, usertype: currentUser.getUserType(), 
             typeaction: currentUser.getTypeMenu(), typeid: currentUser.getTypeMenu(), typelibelle: currentUser.getTypeMenuLibelle() });
     }
     else
@@ -59,7 +59,7 @@ app.get('/signin', function(request, response){
     var currentUser = new User();
     if (currentUser.userConnect(request.sessionID)){
         currentUser.setUserBySid(request.sessionID);
-        response.render('administration', { username: currentUser.login, usertype: currentUser.getUserType(), 
+        response.render('usercertificate', { username: currentUser.login, usertype: currentUser.getUserType(), 
             typeaction: currentUser.getTypeMenu(), typeid: currentUser.getTypeMenu(), typelibelle: currentUser.getTypeMenuLibelle() });
     }
     else
@@ -67,7 +67,7 @@ app.get('/signin', function(request, response){
 });
 
 //Pour cette page, vérifier si la personne est logé, sinon la rediriger vers la page login
-app.get('/administration', function(request, response){
+app.get('/usercertificate', function(request, response){
     response.redirect('/');
 });
 
@@ -122,7 +122,7 @@ app.post('/login', function(request, response){
     var currentUser = new User();
     if (currentUser.userlog(userlogin, userpassword, request.sessionID)){
         console.log("Connexion : "+ currentUser.login.green)
-         response.render('administration', {
+         response.render('usercertificate', {
             username: currentUser.login, usertype: currentUser.getUserType(), codetype: currentUser.getTypeMenu(),
             typeaction: currentUser.getTypeMenu(), typeid: currentUser.getTypeMenu(), typelibelle: currentUser.getTypeMenuLibelle() });
      }
@@ -135,13 +135,13 @@ app.post('/login', function(request, response){
 });
 
 
-app.post('/administration', function(request, response){
-    console.log('administration'.red);
+app.post('/usercertificate', function(request, response){
+    console.log('usercertificate'.red);
     var User = require('./server/user').User;
     var currentUser = new User();
     if (currentUser.userConnect(request.sessionID)){
         currentUser.setUserBySid(request.sessionID);
-        response.render('administration', { username: currentUser.login, usertype: currentUser.getUserType(), 
+        response.render('usercertificate', { username: currentUser.login, usertype: currentUser.getUserType(), 
             typeaction: currentUser.getTypeMenu(), typeid: currentUser.getTypeMenu(), typelibelle: currentUser.getTypeMenuLibelle() });
     }
     else
