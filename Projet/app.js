@@ -40,6 +40,37 @@ app.configure(function () {
  *   GET
  */
 
+app.get('/ca', function(request, response){
+
+
+
+    var p12 = openssl.createClientSSL;
+    var p12options = {
+        bitSize: 2048,
+        clientFileName :'client001',
+        C:'FR',
+        ST: 'IDF',
+        L: 'Paris',
+        O: 'TEST',
+        OU: 'Outlook',
+        CN: 'localhost:3000',
+        emailAddress: 'floc952@hotmail.fr',
+        clientPass: 'password',
+        caFileName: 'ca',
+        serial: '01',
+        days: 365,
+        publicKey: 'MIICQDCCASgwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQCmBRkLLlYoSLHC9U3zCmoLvDxmIvYBX8PfXLYIcmzo0zKRf'
+    };
+
+    p12(p12options).done(function(options, sha1fingerprint) {
+        console.log('SHA-1 fingerprint:', sha1fingerprint);
+    }).fail( function(err) {
+            console.log(err);
+        });
+
+
+});
+
 //Fonction index permettant de rediriger la personne si celle ci est logé ou non
 app.get('/', function(request, response){
     var User = require('./server/user').User;
@@ -70,31 +101,7 @@ app.get('/signin', function(request, response){
 //Pour cette page, vérifier si la personne est logé, sinon la rediriger vers la page login
 app.get('/usercertificate', function(request, response){
 
-
-        var p12 = openssl.createClientSSL;
-        var p12options = {
-            bitSize: 2048,
-            clientFileName :'client001',
-            C:'FR',
-            ST: 'IDF',
-            L: 'Paris',
-            O: 'TEST',
-            OU: 'Outlook',
-            CN: 'localhost:3000',
-            emailAddress: 'floc952@hotmail.fr',
-            clientPass: 'password',
-            caFileName: 'ca',
-            serial: '01',
-            days: 365
-        };
-
-        p12(p12options).done(function(options, sha1fingerprint) {
-            console.log('SHA-1 fingerprint:', sha1fingerprint);
-        }).fail( function(err) {
-           console.log(err);
-        });
-
-    //response.redirect('/');
+    response.redirect('/');
 });
 
 

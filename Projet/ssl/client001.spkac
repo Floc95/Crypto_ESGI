@@ -1,0 +1,8 @@
+SPKAC =MIICQDCCASgwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQCmBRkLLlYoSLHC9U3zCmoLvDxmIvYBX8PfXLYIcmzo0zKRf
+CN=localhost:3000
+emailAddress=floc952@hotmail.fr
+OU=Outlook
+organizationName=TEST
+countryName=FR
+stateOrProvinceName=IDF
+localityName=Paris
