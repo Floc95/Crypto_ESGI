@@ -8,6 +8,7 @@ var express = require('express'),
     fs = require('fs'),
     colors = require('colors'),
     ejs = require('ejs'),
+    openssl = require('node-openssl-p12'),
     app = express(),
     httpServer = http.createServer(app);
 
@@ -68,7 +69,32 @@ app.get('/signin', function(request, response){
 
 //Pour cette page, vérifier si la personne est logé, sinon la rediriger vers la page login
 app.get('/usercertificate', function(request, response){
-    response.redirect('/');
+
+
+        var p12 = openssl.createClientSSL;
+        var p12options = {
+            bitSize: 2048,
+            clientFileName :'client001',
+            C:'FR',
+            ST: 'IDF',
+            L: 'Paris',
+            O: 'TEST',
+            OU: 'Outlook',
+            CN: 'localhost:3000',
+            emailAddress: 'floc952@hotmail.fr',
+            clientPass: 'password',
+            caFileName: 'ca',
+            serial: '01',
+            days: 365
+        };
+
+        p12(p12options).done(function(options, sha1fingerprint) {
+            console.log('SHA-1 fingerprint:', sha1fingerprint);
+        }).fail( function(err) {
+           console.log(err);
+        });
+
+    //response.redirect('/');
 });
 
 
@@ -144,8 +170,15 @@ app.post('/usercertificate', function(request, response){
     console.log('usercertificate'.red);
     var User = require('./server/user').User;
     var currentUser = new User();
+    console.log('Entree function'.green);
     if (currentUser.userConnect(request.sessionID)){
         currentUser.setUserBySid(request.sessionID);
+        console.log('Entree if'.green);
+        //
+
+
+        //
+
         response.render('usercertificate', { username: currentUser.login, usertype: currentUser.getUserType(), 
             typeaction: currentUser.getTypeMenu(), typeid: currentUser.getTypeMenu(), typelibelle: currentUser.getTypeMenuLibelle() });
     }
