@@ -8,7 +8,8 @@ var express = require('express'),
     fs = require('fs'),
     colors = require('colors'),
     ejs = require('ejs'),
-    openssl = require('node-openssl-p12'),
+    cp = require('child_process'),
+    //openssl = require('node-openssl-p12'),
     app = express(),
     httpServer = http.createServer(app);
 
@@ -41,33 +42,46 @@ app.configure(function () {
  */
 
 app.get('/ca', function(request, response){
+    console.log("Entree dans la fonction de génération de certificats");
+    //cp.exec('%openssl% req -passout pass:abc -subj "/C=US/ST=IL/L=Chicago/O=IBM Corporation/OU=IBM Software Group/CN=John Smith/emailAddress=smith@abc.ibm.com" -new > test.cert.csr');
+    //cp.exec('echo test');
+    //var createCertificate = ' req -passout pass:abc -subj "/C=US/ST=IL/L=Chicago/O=IBM Corporation/OU=IBM Software Group/CN=John Smith/emailAddress=smith@abc.ibm.com" -new > ./ssl/test.cert.csr';
 
+    /*
+        function run_cmd(cmd, args, cb, end) {
+            var spawn = require('child_process').spawn,
+                child = spawn(cmd, args),
+                me = this;
+            child.stdout.on('data', function (buffer) { cb(me, buffer) });
+            child.stdout.on('end', end);
+        }
 
+        // Run C:\Windows\System32\netstat.exe -an
+        var foo = new run_cmd(
+            '%openssl%', [createCertificate],
+            function (me, buffer) { me.stdout += buffer.toString() },
+            function () { console.log(foo.stdout) }
+        );
+    */
 
-    var p12 = openssl.createClientSSL;
-    var p12options = {
-        bitSize: 2048,
-        clientFileName :'client001',
-        C:'FR',
-        ST: 'IDF',
-        L: 'Paris',
-        O: 'TEST',
-        OU: 'Outlook',
-        CN: 'localhost:3000',
-        emailAddress: 'floc952@hotmail.fr',
-        clientPass: 'password',
-        caFileName: 'ca',
-        serial: '01',
-        days: 365,
-        publicKey: 'MIICQDCCASgwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQCmBRkLLlYoSLHC9U3zCmoLvDxmIvYBX8PfXLYIcmzo0zKRf'
-    };
+    //> Fait a la création
+    //Créez un fichier CSR pour l'utilisateur. Définissez le mot de passe d'origine en abc. Vous pouvez également indiquer un sujet approprié.
+    var createCertificate = '%openssl% req -passout pass:'+password+' -subj "/C='+pays+'/ST=IDF/L=Paris/O=ESGI/OU=AL/CN='+prenom+' '+nom+'/emailAddress='+email+'" -new > .ssl/'+login+'.cert.csr';
+    //openssl req -passout pass:abc -subj "/C=US/ST=IL/L=Chicago/O=IBM Corporation/OU=IBM Software Group/CN=John Smith/emailAddress=smith@abc.ibm.com" -new > johnsmith.cert.csr
 
-    p12(p12options).done(function(options, sha1fingerprint) {
-        console.log('SHA-1 fingerprint:', sha1fingerprint);
-    }).fail( function(err) {
-            console.log(err);
-        });
+    //> Authorité de validation
+    //Créez un fichier de clés privées sans mot de passe.
+    var validateCertificate = '%openssl% rsa -passin pass:'+password+' -in privkey.pem -out '+login+'.key';
+    //openssl rsa -passin pass:abc -in privkey.pem -out johnsmith.key
 
+    //> Authorité d'enregistrement
+    //Créez un certificat X.509 pour le nouvel utilisateur, signez-le numériquement à l'aide de la clé privée de l'utilisateur et certifiez-le à l'aide de la clé privée CA. La ligne de commande suivante crée un certificat qui est valide pendant 365 jours.
+    var signCertificate = '%openssl% x509 -req -in '+login+'.cert.csr -out '+login+'.cert -signkey '+login+'.key -CA esgicrypto.ca.cert -CAkey esgicrypto.ca.key -CAcreateserial -days 365';
+    //openssl x509 -req -in johnsmith.cert.csr -out johnsmith.cert -signkey johnsmith.key -CA waipio.ca.cert -CAkey waipio.ca.key -CAcreateserial -days 365
+
+    //Créez un fichier codé PKCS#12. Le mot de passe doit être valeur par défaut.
+    var getCertificate = '%openssl% pkcs12 -passout pass:default -export -in '+login+'.cert -out '+login+'.cert.p12 -inkey '+login+'.key';
+    //openssl pkcs12 -passout pass:default -export -in johnsmith.cert -out johnsmith.cert.p12 -inkey johnsmith.key
 
 });
 
