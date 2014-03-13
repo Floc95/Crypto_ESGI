@@ -6,6 +6,10 @@ function User(){
     self.password = '';
     self.usertype = '';
     self.sid = ''; //sessionid
+    self.nom = '';
+    self.prenom = '';
+    self.email = '';
+    self.pays = '';
 
 
     //Donne le libellé du type d'utilisateur
@@ -106,6 +110,19 @@ function User(){
         self.addUser();
     };
 
+    self.createUser = function(user, password, usertype , sessionID, nom, prenom, email, pays){
+        self.login = user;
+        self.password = password;
+        self.usertype = usertype;
+        self.sid = sessionID;
+        self.nom = nom;
+        self.prenom = prenom;
+        self.email = email;
+        self.pays = pays;
+        //Ecrire dans un fichier
+        self.addUser();
+    };
+
     //Ajoute un utilisateur dans le fichier user.json
     self.addUser = function(){
         var fs = require('fs');
@@ -119,7 +136,11 @@ function User(){
             "login" : self.login,
             "password" : self.password,
             "type" : self.usertype,
-            "sid" : self.sid
+            "sid" : self.sid,
+            "nom" : self.nom,
+            "prenom" : self.prenom,
+            "email" : self.email,
+            "pays" : self.pays
         }
 
         fs.writeFileSync(file, JSON.stringify(data) , "UTF-8");

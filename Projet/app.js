@@ -94,11 +94,16 @@ app.post('/signin', function(request, response){
     var userlogin = request.body.user.login;
     var userpassword = request.body.user.password;
     var usertype = request.body.user.type;
+    var usernom = request.body.user.nom;
+    var userprenom = request.body.user.prenom;
+    var useremail = request.body.user.email;
+    var userpays = request.body.user.pays;
+
 
     var User = require('./server/user').User;
     var currentUser = new User();
     if (currentUser.userExist(userlogin)){
-        currentUser.createUser(userlogin,userpassword,usertype,request.sessionID);
+        currentUser.createUser(userlogin,userpassword,usertype,request.sessionID, usernom, userprenom, useremail, userpays);
         response.render('login', {
             message: "Félicitation ! l'utilisateur a bien été créé !",
             errormessage: ''
